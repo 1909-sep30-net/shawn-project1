@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BananaStore.Models.CustomersViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Customer Search Results</h1>
+<p> Your search for @Model.First().User_FirstName @Model.First().User_LastName has returned @Model.Count() results : </p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.ActionLink("View Order History", "History", "Orders") |
+                @Html.ActionLink("Start New Order", "New", "Orders")
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
