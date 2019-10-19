@@ -12,6 +12,7 @@ namespace BananaStore.Library.Interfaces
         public IEnumerable<Library.Models.Orders> GetAllOrders();
 
         public IEnumerable<Library.Models.Orders> GetAllOrdersByCustomerId(string customerId);
+        IEnumerable<Library.Models.Orders> GetAllOrdersByLocationId(string locationId);
 
         public Library.Models.Orders GetSingleOrder(string orderId);
 

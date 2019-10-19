@@ -36,6 +36,23 @@ namespace BananaStore.Controllers
             return View(viewModel);
         }
 
+        public ActionResult LocationHistory([FromQuery]string locationId)
+        {
+            var orders = _repository.GetAllOrdersByLocationId(locationId);
+
+            var viewModel = orders.Select(o => new OrdersViewModel()
+            {
+                OrderId = o.OrderId,
+                OrderDate = o.OrderDate,
+                CustomerId = o.CustomerId,
+                LocationId = o.LocationId
+            }).ToList();
+
+            return View(viewModel);
+        }
+
+
+
         // Get: Orders/Details *By OrderId
         public ActionResult Details([FromQuery]string orderId)
         {

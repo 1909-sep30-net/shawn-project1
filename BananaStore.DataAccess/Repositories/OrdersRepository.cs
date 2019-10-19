@@ -36,6 +36,17 @@ namespace BananaStore.DataAccess.Repositories
             return Order.Select(Mapper.MapSingleOrder);
         }
 
+        IEnumerable<Library.Models.Orders> IOrdersRepository.GetAllOrdersByLocationId(string locationId)
+        {
+            var locationIdAsInt = (int?) int.Parse(locationId);
+            IQueryable<Entities.Orders> Order = from od in _dbContext.Orders
+                                                where od.LocationId == locationIdAsInt
+                                                select od;
+
+
+            return Order.Select(Mapper.MapSingleOrder);
+        }
+
         Library.Models.Orders IOrdersRepository.GetSingleOrder(string orderId)
         {
             IQueryable<Entities.Orders> Order = from od in _dbContext.Orders
