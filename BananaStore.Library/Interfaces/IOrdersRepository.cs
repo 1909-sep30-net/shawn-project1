@@ -16,5 +16,6 @@ namespace BananaStore.Library.Interfaces
         public Library.Models.Orders GetSingleOrder(string orderId);
 
         public void PlaceOrder(Library.Models.Orders orders);
+        public Library.Models.OrderDetails GetOrderDetails(string orderId);
     }
 }

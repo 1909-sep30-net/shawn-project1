@@ -21,14 +21,58 @@ namespace BananaStore.Controllers
         }
 
         // GET: Orders/History *By Customer Guid
-        public ActionResult History(string id)
+        public ActionResult History([FromQuery]string customerId)
         {
+            var orders = _repository.GetAllOrdersByCustomerId(customerId);
 
-            return View();
+            var viewModel = orders.Select(o => new OrdersViewModel()
+            {
+                OrderId = o.OrderId,
+                OrderDate = o.OrderDate,
+                CustomerId = o.CustomerId,
+                LocationId = o.LocationId
+            }).ToList();
+
+            return View(viewModel);
         }
 
-        // GET: Orders/History *By Store Id
-        public ActionResult History(int id)
+        // Get: Orders/Details *By OrderId
+        public ActionResult Details([FromQuery]string orderId)
+        {
+            var orders = _repository.GetOrderDetails(orderId);
+
+            OrderDetailsViewModel viewModel = new OrderDetailsViewModel()
+            {
+                OrderId = orders.OrderId,
+                OrderDate = orders.OrderDate,
+                CustomerId = orders.CustomerId,
+                LocationId = orders.LocationId,
+                FirstName = orders.FirstName,
+                LastName = orders.LastName,
+                LocationName = orders.LocationName,
+                Purchased = new List<OrderDetailsItemsViewModel>()
+            };
+
+            foreach (var item in orders.Purchased)
+            {
+                viewModel.Purchased.Add(new OrderDetailsItemsViewModel()
+                {
+                    OrderId = item.OrderId,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    ProductName = item.ProductName,
+                    ProductDesc = item.ProductDesc
+                });
+            }
+
+            var viewModelList = new List<OrderDetailsViewModel>();
+            viewModelList.Add(viewModel);
+            IEnumerable<OrderDetailsViewModel> ienumerableModel = viewModelList;
+            return View(ienumerableModel);
+        }
+
+        //GET: Orders/History* By Store Id
+        public ActionResult New([FromQuery]int customerId)
         {
             return View();
         }

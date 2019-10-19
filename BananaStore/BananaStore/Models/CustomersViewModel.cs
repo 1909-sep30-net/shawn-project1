@@ -11,7 +11,7 @@ namespace BananaStore.Models
     {
         public CustomersViewModel()
         {
-          // Don't forget this unessicary piece of the puzzle
+          // Don't forget this piece of the puzzle
         }
         [Required]
         public Guid CustomerId { get; set; }

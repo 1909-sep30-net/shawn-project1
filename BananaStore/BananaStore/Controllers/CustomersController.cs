@@ -21,17 +21,12 @@ namespace BananaStore.Controllers
         }
 
 
-        // GET: Customers
+        // GET: Customers from firstname/lastname
         public ActionResult Index([FromQuery]string FirstName, [FromQuery]string LastName)
         {
 
             IEnumerable<Customers> customers = _repository.GetCustomersByName(FirstName, LastName);
-
-            if (customers.Count() == 0)
-            {
-                Response.Redirect("http://www.microsoft.com/gohere/look.htm");
-            }
-
+            
             var viewModels = customers.Select(p => new CustomersViewModel
             {
                 CustomerId = p.CustomerId,
@@ -40,7 +35,7 @@ namespace BananaStore.Controllers
                 User_FirstName = FirstName,
                 User_LastName = LastName
 
-            });
+            }).ToList();
 
             return View(viewModels);
         }

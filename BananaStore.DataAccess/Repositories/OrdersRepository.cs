@@ -51,6 +51,68 @@ namespace BananaStore.DataAccess.Repositories
             _dbContext.Orders.Add(CurrentOrder);
         }
 
+        Library.Models.OrderDetails IOrdersRepository.GetOrderDetails(string orderId)
+        {
+            IEnumerable<Entities.Orders> order = from od in _dbContext.Orders
+                                                 where od.OrderId.ToString().Contains(orderId)
+                                                 select od;
+
+            var orderItems = from oi in _dbContext.OrderItems
+                                                          where oi.OrderId.ToString().Equals(orderId)
+                                                          join pd in _dbContext.Products on oi.ProductId.ToString() equals pd.ProductId.ToString()
+                                                          select new
+                                                          {
+                                                              OrderId = oi.OrderId,
+                                                              ProductId = oi.ProductId,
+                                                              Quantity = oi.Quantity,
+                                                              ProductName = pd.ProductName,
+                                                              ProductDesc = pd.ProductDesc
+                                                          };
+
+            IEnumerable<Entities.Products> products = from ps in _dbContext.Products
+                                                      select ps;
+
+            IEnumerable <Entities.Customers> customers = from cs in _dbContext.Customers
+                                                           where cs.CustomerId.ToString().Equals(order.First().CustomerId.ToString())
+                                                           select cs;
+
+            IEnumerable<Entities.Locations> locations = from ls in _dbContext.Locations
+                                                        where ls.LocationId == order.First().LocationId
+                                                        select ls;
+
+            OrderDetails LibraryOrderDetails = new OrderDetails()
+            {
+                OrderId = order.First().OrderId,
+                OrderDate = order.First().OrderDate,
+                CustomerId = order.First().CustomerId,
+                LocationId = order.First().LocationId,
+                FirstName = customers.First().FirstName,
+                LastName = customers.First().LastName,
+                LocationName = locations.First().LocationName,
+                Purchased = new List<OrderDetailsItems>()
+                
+            };
+
+            var LibraryOrderDetailsItems = orderItems.Select(x => new Library.Models.OrderDetailsItems()
+            {
+                OrderId = x.OrderId,
+                ProductId = x.ProductId,
+                Quantity = x.Quantity,
+                ProductName = x.ProductName,
+                ProductDesc = x.ProductDesc
+
+                
+
+            }).ToList();
+
+            foreach (var item in LibraryOrderDetailsItems)
+            {
+                LibraryOrderDetails.Purchased.Add(item);
+            }
+
+            return LibraryOrderDetails;
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 

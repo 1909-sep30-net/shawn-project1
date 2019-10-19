@@ -5,6 +5,14 @@
 }
 
 <h1>Customer Search Results</h1>
+
+@if (Model.Count() == 0)
+{
+    <span class="" role="alert">Your search returned 0 results.</span>
+    @Html.Partial("../Shared/_CustomerSearchForm.cshtml");
+}
+else
+{
 <p> Your search for @Model.First().User_FirstName @Model.First().User_LastName has returned @Model.Count() results : </p>
 <table class="table">
     <thead>
@@ -22,22 +30,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.ActionLink("View Order History", "History", "Orders") |
-                @Html.ActionLink("Start New Order", "New", "Orders")
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.ActionLink("View Order History", "History", "Orders", new { customerId = Model.First().CustomerId }, null) |
+                    @Html.ActionLink("Start New Order", "New", "Orders", new { customerId = Model.First().CustomerId }, null)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+}
