@@ -71,7 +71,7 @@ namespace BananaStore.Controllers
             return View(ienumerableModel);
         }
 
-        //GET: Orders/History* By Store Id
+        //GET: Orders/NEW* By customerId
         public ActionResult New([FromQuery]int customerId)
         {
             return View();

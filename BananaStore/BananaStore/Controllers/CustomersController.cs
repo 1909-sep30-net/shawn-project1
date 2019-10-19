@@ -40,78 +40,40 @@ namespace BananaStore.Controllers
             return View(viewModels);
         }
 
-        //// GET: Customers/Details
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
+        
         // GET: Customers/Create
         public ActionResult Create()
         {
             return View();
         }
 
+
+        // GET: Customers/Create
+        public ActionResult CreateSuccess([FromQuery]Guid CustomerId, [FromQuery]string FirstName, [FromQuery]string LastName)
+        {
+            var viewModel = new CustomersViewModel()
+            {
+                CustomerId = CustomerId,
+                FirstName = FirstName,
+                LastName = LastName
+            };
+
+            return View(viewModel);
+        }
+
         // POST: Customers/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Create(CustomersViewModel newCustomerInfo)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                var NewCustomer = _repository.AddCustomer(newCustomerInfo.User_FirstName, newCustomerInfo.User_LastName);
+                return RedirectToAction("CreateSuccess", "Customers", NewCustomer, null);
             }
             catch
             {
-                return View();
-            }
-        }
-
-        // GET: Customers/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Customers/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Customers/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Customers/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                return View("Error");
             }
         }
     }

@@ -46,12 +46,19 @@ namespace BananaStore.DataAccess.Repositories
 
         public Library.Models.Customers AddCustomer(string firstName, string lastName)
         {
-            Library.Models.Customers NewCustomer = new Library.Models.Customers(firstName, lastName);
+            Library.Models.Customers newCustomer = new Library.Models.Customers(firstName, lastName);
 
-            _dbContext.Customers.Add( Mapper.MapAllCustomers(NewCustomer) );
-            _dbContext.SaveChanges();
+            _dbContext.Customers.Add( Mapper.MapAllCustomers(newCustomer) );
+            try
+            {
+                _dbContext.SaveChanges();
+                //Log the addition here
+            }catch (DbUpdateException ex)
+            {
+                // Log the exception here
+            }
 
-            return NewCustomer;
+            return newCustomer;
         }
 
         #region IDisposable Support
