@@ -1,64 +1,75 @@
 ﻿@model BananaStore.Models.LocationOrderFormViewModel
 
 @{
-    ViewData["Title"] = "PlaceOrder";
+    ViewData["Title"] = "Placed Order";
 }
 
-<h1>PlaceOrder</h1>
+<h1>Placed Order</h1>
 
-<div>
-    <h4>LocationOrderFormViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OrderId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OrderDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CustomerId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LocationId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LocationId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LocationName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LocationName)
-        </dd>
-    </dl>
-</div>
-@foreach (var item in Model.Purchased)
+
+
+@if (TempData["OrderCompleted"].Equals("false"))
 {
-    @Html.DisplayFor(model => item.Quantity)
+    <h4>Database error</h4>
 }
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+else
+{
+
+
+    <div>
+        <h4>LocationOrderFormViewModel</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.OrderId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.OrderId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.OrderDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CustomerId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LocationId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LocationId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LocationName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LocationName)
+            </dd>
+        </dl>
+    </div>
+    @foreach (var item in Model.Purchased)
+    {
+        @Html.DisplayFor(model => item.Quantity)
+    }
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        <a asp-action="Index">Back to List</a>
+    </div>
+}

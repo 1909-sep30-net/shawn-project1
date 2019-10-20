@@ -221,8 +221,6 @@ namespace BananaStore.Controllers
                 LocationId = intLocationId,
             };
 
-            _repository.PlaceOrder(FinalOrder);
-
             foreach (var item in locationStockDetails)
             {
                 string MappedQuantity = "";
@@ -244,10 +242,10 @@ namespace BananaStore.Controllers
                         MappedQuantity = PN5526;
                         break;
                     default:
-                        MappedQuantity = "25";
+                        MappedQuantity = "0";
                         break;
                 }
-
+                if (String.IsNullOrEmpty(MappedQuantity)) { MappedQuantity = "0"; }
                 CurrentOrderDetails.Purchased.Add(new OrderDetailsItems()
                 {
                     OrderId = Guid.Parse(OrderId),
@@ -255,6 +253,16 @@ namespace BananaStore.Controllers
                     Quantity = (int?)int.Parse(MappedQuantity)
                 });
             }
+
+            List<OrderItems> FinalOrderItems = CurrentOrderDetails.Purchased.Select(x => new OrderItems()
+            {
+                OrderId = x.OrderId,
+                ProductId = x.ProductId,
+                Quantity = x.Quantity
+            }).ToList();
+
+
+            
 
             Models.LocationOrderFormViewModel CurrentOrderDetailsViewModel = new Models.LocationOrderFormViewModel()
             {
@@ -305,10 +313,10 @@ namespace BananaStore.Controllers
                         MappedQuantity = PN5526;
                         break;
                     default:
-                        MappedQuantity = "25";
+                        MappedQuantity = "0";
                         break;
                 }
-
+                if (String.IsNullOrEmpty(MappedQuantity)) { MappedQuantity = "0"; }
                 CurrentOrderDetailsViewModel.Purchased.Add(new OrderDetailsItemsViewModel()
                 {
                     OrderId = Guid.Parse(OrderId),
@@ -317,7 +325,14 @@ namespace BananaStore.Controllers
                 });
             }
 
-
+            if (_repository.PlaceOrder(FinalOrder, FinalOrderItems))
+            {
+                TempData["OrderCompleted"] = true;
+                
+            } else
+            {
+                TempData["OrderCompleted"] = false;
+            }
             return View(CurrentOrderDetailsViewModel);
         }
     }

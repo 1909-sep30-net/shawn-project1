@@ -16,7 +16,7 @@ namespace BananaStore.Library.Interfaces
 
         public Library.Models.Orders GetSingleOrder(string orderId);
 
-        public void PlaceOrder(Library.Models.Orders orders);
+        public bool PlaceOrder(Library.Models.Orders orders, List<Library.Models.OrderItems> orderItems);
         public Library.Models.OrderDetails GetOrderDetails(string orderId);
 
         public IEnumerable<Locations> GetLocationDetails(int? locationId);

@@ -56,10 +56,56 @@ namespace BananaStore.DataAccess.Repositories
             return Order.Select(Mapper.MapSingleOrder).First();
         }
 
-        void IOrdersRepository.PlaceOrder(Library.Models.Orders orders)
+        bool IOrdersRepository.PlaceOrder(Library.Models.Orders orders, List<Library.Models.OrderItems> orderItems)
         {
-            var CurrentOrder = Mapper.MapSingleOrder(orders);
-            _dbContext.Orders.Add(CurrentOrder);
+            // Check stock
+            var locationStock = from ls in _dbContext.LocationStock
+                                where ls.LocationId == orders.LocationId
+                                select ls;
+
+            foreach (var item in orderItems)
+            {
+                foreach (var stockitem in locationStock)
+                {
+                    if (item.ProductId == stockitem.ProductId)
+                    {
+                        if (stockitem.Quantity < item.Quantity)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+
+            // Update stock
+            foreach (var item in orderItems)
+            {
+                var CurrentItem = from ls in _dbContext.LocationStock
+                                  where ((ls.LocationId == orders.LocationId) && (ls.ProductId == item.ProductId))
+                                  select ls;
+                if (CurrentItem.Count() != 1)
+                {
+                    return false;
+                }
+
+                CurrentItem.First().Quantity -= (int)item.Quantity;
+                _dbContext.SaveChanges();
+            }
+
+            // put order in db (Orders Table)
+            var FinalOrder = Mapper.MapSingleOrder(orders);
+            _dbContext.Orders.Add(FinalOrder);
+            _dbContext.SaveChanges();
+            // put order in db (OrderItems Table)
+            var FinalOrderItems = orderItems.Select(Mapper.MapSingleOrderItems);
+            foreach (var finalOrderItem in FinalOrderItems)
+            {
+                _dbContext.OrderItems.Add(finalOrderItem);
+                _dbContext.SaveChanges();
+            }
+
+            return true;
         }
 
         public IEnumerable<Library.Models.Customers> GetCustomerDetails(Guid customerId)
