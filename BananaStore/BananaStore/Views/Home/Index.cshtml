@@ -1,13 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    @Html.Partial("../Shared/_CustomerSearchForm.cshtml")
-</div>
-<div>
-    @Html.Partial("../Shared/_CustomerCreateForm.cshtml")
-</div>
-<div>
-    <a href="../Orders/LocationHistory?locationid=10">Store history</a>
-</div>
+    <div class="d-flex align-items-center flex-column justify-content-center h-100" id="header">
+        <div>
+            <h1>Banana Store</h1>
+            <h3>Employee Kiosk</h3>
+        </div>
+        <div class="d-flex align-items-center flex-row justify-content-around">
+            <div class="col-6">
+                <a href="Customers/Search">Begin New Order</a>
+            </div>
+            <div class="col-6">
+                <a href="#">Begin History Search</a>
+            </div>
+        </div>
+    </div>

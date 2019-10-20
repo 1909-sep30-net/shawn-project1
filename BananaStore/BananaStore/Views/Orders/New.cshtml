@@ -1,0 +1,37 @@
+﻿@model BananaStore.Models.LocationOrderFormViewModel
+@{
+    ViewData["Title"] = "Order Screen";
+}
+<h1>Order Screen</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">@Model.CustomerId</div>
+        <div class="col-md-6"> @Model.FirstName @Model.LastName</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">@Model.LocationId</div>
+        <div class="col-md-4">@Model.LocationName</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">@Model.OrderId</div>
+        <div class="col-md-4">@Model.OrderDate</div>
+    </div>
+</div>
+<form action="PlaceOrder" method="get" class="form-group needs-validation">
+    <input type="hidden" id="CustomerId" name="CustomerId" value="@Model.CustomerId" />
+    <input type="hidden" id="FirstName" name="FirstName" value="@Model." />
+    <input type="hidden" id="LastName" name="LastName" value="@Model.LastName" />
+    <input type="hidden" id="LocationId" name="LocationId" value="@Model.LocationId" />
+    <input type="hidden" id="LocationName" name="LocationName" value="@Model.LocationName" />
+    <input type="hidden" id="OrderId" name="OrderId" value="@Model.OrderId" />
+    <input type="hidden" id="OrderDate" name="OrderDate" value="@Model.OrderDate" />
+    @foreach (var item in Model.LocationStock)
+    {
+
+        <div>@item.ProductId</div><div>@item.ProductName</div><div>In Stock: @item.Quantity</div><div>Order Amount: <input class="" type="number" name="PN@(item.ProductId.ToString().Substring(0, 4))" min="0" max="@item.Quantity" /><div class="invalid-feedback">Please enter a valid number from 0 - @item.Quantity</div></div>
+    }
+    <button class="btn btn-outline-primary" value="Submit">Place Order</button>
+</form>
+
+
+

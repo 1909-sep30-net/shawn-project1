@@ -1,0 +1,12 @@
+﻿@model IEnumerable<BananaStore.Models.CustomersViewModel>
+
+@{
+    ViewData["Title"] = "ChooseLocation";
+}
+
+
+@Html.ActionLink("Location 10", "New", "Orders", new { locationId = 10 }, null)
+@Html.ActionLink("Location 20", "New", "Orders", new { locationId = 20 }, null)
+@Html.ActionLink("Location 30", "New", "Orders", new { locationId = 30 }, null)
+
+

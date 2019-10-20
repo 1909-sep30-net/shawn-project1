@@ -22,7 +22,7 @@ namespace BananaStore.Controllers
 
 
         // GET: Customers from firstname/lastname
-        public ActionResult Index([FromQuery]string FirstName, [FromQuery]string LastName)
+        public ActionResult CustomerSearchResults([FromQuery]string FirstName, [FromQuery]string LastName)
         {
 
             IEnumerable<Customers> customers = _repository.GetCustomersByName(FirstName, LastName);
@@ -37,12 +37,14 @@ namespace BananaStore.Controllers
 
             }).ToList();
 
+            
+            
             return View(viewModels);
         }
 
         
-        // GET: Customers/Create
-        public ActionResult Create()
+        // GET: Customers/Search
+        public ActionResult Search()
         {
             return View();
         }

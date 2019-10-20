@@ -62,6 +62,24 @@ namespace BananaStore.DataAccess.Repositories
             _dbContext.Orders.Add(CurrentOrder);
         }
 
+        public IEnumerable<Library.Models.Customers> GetCustomerDetails(Guid customerId)
+        {
+            IEnumerable<Entities.Customers> customers = from cs in _dbContext.Customers
+                                                        where cs.CustomerId.ToString().Equals(customerId.ToString())
+                                                        select cs;
+
+            return customers.Select(Mapper.MapAllCustomers);
+        }
+
+        public IEnumerable<Library.Models.Locations> GetLocationDetails(int? locationId)
+        {
+            IEnumerable<Entities.Locations> locations = from ls in _dbContext.Locations
+                                                        where ls.LocationId == locationId
+                                                        select ls;
+
+            return locations.Select(Mapper.MapSingleLocation);
+        }
+
         Library.Models.OrderDetails IOrdersRepository.GetOrderDetails(string orderId)
         {
             IEnumerable<Entities.Orders> order = from od in _dbContext.Orders
@@ -111,7 +129,6 @@ namespace BananaStore.DataAccess.Repositories
                 Quantity = x.Quantity,
                 ProductName = x.ProductName,
                 ProductDesc = x.ProductDesc
-
                 
 
             }).ToList();
@@ -122,6 +139,31 @@ namespace BananaStore.DataAccess.Repositories
             }
 
             return LibraryOrderDetails;
+        }
+
+        public IEnumerable<Library.Models.LocationStockDetails> GetLocationStockDetails(int? locationId)
+        {
+            var locations = from ls in _dbContext.LocationStock
+                            where ls.LocationId == locationId
+                            join pd in _dbContext.Products on ls.ProductId equals pd.ProductId
+                            select new
+                            {
+                                LocationId = ls.LocationId,
+                                ProductId = pd.ProductId,
+                                Quantity = ls.Quantity,
+                                ProductName = pd.ProductName,
+                                ProductDesc = pd.ProductDesc
+                            };
+            IEnumerable<Library.Models.LocationStockDetails> locationStockDetails = locations.Select(x => new LocationStockDetails()
+                                                                                                    {
+                                                                                                        LocationId = x.LocationId,
+                                                                                                        ProductId = x.ProductId,
+                                                                                                        Quantity = x.Quantity,
+                                                                                                        ProductName = x.ProductName,
+                                                                                                        ProductDesc = x.ProductDesc 
+                                                                                                    }).ToList();
+
+            return locationStockDetails;
         }
 
         #region IDisposable Support
