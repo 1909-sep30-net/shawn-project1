@@ -1,8 +1,20 @@
 ﻿<div class="border border-warning p-5 m-3">
-        <h3>Create a New Customer</h3>
-        <form class="form-group" action="Create" method="post">
-            <input type="text" name="User_FirstName" value="" />
-            <input type="text" name="User_LastName" value="" />
-            <input type="submit" name="submit" value="Submit" />
-        </form>
+    <h3>Create a New Customer</h3>
+    @*CSRF Protection Automatically Applied*@
+    <form class="text-center" asp-controller="Customers" asp-action="Create" method="post">
+        <input class="m-1" type="text" name="User_FirstName" placeholder="First Name" value="" />
+        <input class="m-1" type="text" name="User_LastName" placeholder="Last Name" value="" />
+        <div class="text-center m-3 p-0">
+            <input class="btn btn-outline-warning" type="submit" name="submit" value="Submit" />
+        </div>
+    </form>
 </div>
+
+
+@*<form class="text-center" action="Create" method="post">
+    <input class="m-1" type="text" name="User_FirstName" placeholder="First Name" value="" />
+    <input class="m-1" type="text" name="User_LastName" placeholder="Last Name" value="" />
+    <div class="text-center m-3 p-0">
+        <input class="btn btn-outline-warning" type="submit" name="submit" value="Submit" />
+    </div>
+</form>*@

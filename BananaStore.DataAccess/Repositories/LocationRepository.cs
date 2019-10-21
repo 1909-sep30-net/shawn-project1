@@ -17,6 +17,12 @@ namespace BananaStore.DataAccess.Repositories
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
+
+        /// <summary>
+        /// Get Single location by location Id
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <returns>Single location matching locationId</returns>
         Library.Models.Locations ILocationsRepository.GetSingleLocation(int? locationId)
         {
             IQueryable<Entities.Locations> Location =   from ls in _dbContext.Locations

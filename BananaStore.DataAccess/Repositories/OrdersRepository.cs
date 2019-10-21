@@ -6,11 +6,13 @@ using BananaStore.DataAccess.Entities;
 using System.Linq;
 using BananaStore.Library.Interfaces;
 using BananaStore.Library.Models;
+using NLog;
 
 namespace BananaStore.DataAccess.Repositories
 {
     public class OrdersRepository : IOrdersRepository
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly BananaStoreContext _dbContext;
 
@@ -19,6 +21,10 @@ namespace BananaStore.DataAccess.Repositories
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        /// <summary>
+        /// Lists all orders in database
+        /// </summary>
+        /// <returns>List of all orders</returns>
         IEnumerable<Library.Models.Orders> IOrdersRepository.GetAllOrders()
         {
             IQueryable<Entities.Orders> Order = from od in _dbContext.Orders
@@ -27,6 +33,11 @@ namespace BananaStore.DataAccess.Repositories
             return (IEnumerable<Library.Models.Orders>) Order.Select(Mapper.MapSingleOrder);
         }
 
+        /// <summary>
+        /// Lists all orders in database from a certain customer
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns>IEnumerable of Orders matching customerId</returns>
         IEnumerable<Library.Models.Orders> IOrdersRepository.GetAllOrdersByCustomerId(string customerId)
         {
             IQueryable<Entities.Orders> Order = from od in _dbContext.Orders
@@ -36,6 +47,11 @@ namespace BananaStore.DataAccess.Repositories
             return Order.Select(Mapper.MapSingleOrder);
         }
 
+        /// <summary>
+        /// Lists all orders in data base from a certain location
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <returns>IEnumberable of Orders matching locationId</returns>
         IEnumerable<Library.Models.Orders> IOrdersRepository.GetAllOrdersByLocationId(string locationId)
         {
             var locationIdAsInt = (int?) int.Parse(locationId);
@@ -47,6 +63,11 @@ namespace BananaStore.DataAccess.Repositories
             return Order.Select(Mapper.MapSingleOrder);
         }
 
+        /// <summary>
+        /// Returns a single order by orderId
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns>Single order matching orderId</returns>
         Library.Models.Orders IOrdersRepository.GetSingleOrder(string orderId)
         {
             IQueryable<Entities.Orders> Order = from od in _dbContext.Orders
@@ -56,8 +77,19 @@ namespace BananaStore.DataAccess.Repositories
             return Order.Select(Mapper.MapSingleOrder).First();
         }
 
+        /// <summary>
+        /// Places order in database across 3 Tables:
+        /// Orders, OrderItems and LocationStock.
+        /// Adds order info to the Orders table.
+        /// Add all OrderItems info to the OrderITems table.
+        /// Updates LocationStock as needed (Depletes LocationStock quantities as needed)
+        /// </summary>
+        /// <param name="orders"></param>
+        /// <param name="orderItems"></param>
+        /// <returns>Boolean - true if everything was successful, false if there was an exception.</returns>
         bool IOrdersRepository.PlaceOrder(Library.Models.Orders orders, List<Library.Models.OrderItems> orderItems)
         {
+        
             // Check stock
             var locationStock = from ls in _dbContext.LocationStock
                                 where ls.LocationId == orders.LocationId
@@ -90,24 +122,56 @@ namespace BananaStore.DataAccess.Repositories
                 }
 
                 CurrentItem.First().Quantity -= (int)item.Quantity;
-                _dbContext.SaveChanges();
+                try
+                {
+                    _dbContext.SaveChanges();
+                    logger.Debug($"Stock updated successfully. | LocationId : {CurrentItem.First().LocationId} | ProductId : {item.ProductId}.");
+                } catch (DbUpdateException ex)
+                {
+                    logger.Error($"Database Update Exception. | LocationId : {CurrentItem.First().LocationId}  | ProductId : {item.ProductId}: {ex}.");
+                    return false;
+                }
+                
             }
 
             // put order in db (Orders Table)
             var FinalOrder = Mapper.MapSingleOrder(orders);
             _dbContext.Orders.Add(FinalOrder);
-            _dbContext.SaveChanges();
-            // put order in db (OrderItems Table)
+            try
+            {
+                _dbContext.SaveChanges();
+                logger.Debug($"Order created successfully. | OrderId : {FinalOrder.OrderId}.");
+            }
+            catch (DbUpdateException ex)
+            {
+                logger.Error($"Database Update Exception | Orders Tabe Order Id : {orders.OrderId}: {ex}.");
+                return false;
+            }
+
+            // put orderitems in db (OrderItems Table)
             var FinalOrderItems = orderItems.Select(Mapper.MapSingleOrderItems);
             foreach (var finalOrderItem in FinalOrderItems)
             {
                 _dbContext.OrderItems.Add(finalOrderItem);
-                _dbContext.SaveChanges();
+                try
+                {
+                    _dbContext.SaveChanges();
+                    logger.Debug($"OrderItem created successfully. | OrderId : {FinalOrder.OrderId} | ProductId : {FinalOrder.OrderId}.");
+                } catch(DbUpdateException ex)
+                {
+                    logger.Error($"Database Update Exception | Orders Tabe Order Id : {orders.OrderId}: {ex}.");
+                    return false;
+                }
             }
 
             return true;
         }
 
+        /// <summary>
+        /// Get customer details by Customer Id.
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns>Ienumerable of a single customer model matching customerId.</returns>
         public IEnumerable<Library.Models.Customers> GetCustomerDetails(Guid customerId)
         {
             IEnumerable<Entities.Customers> customers = from cs in _dbContext.Customers
@@ -117,6 +181,11 @@ namespace BananaStore.DataAccess.Repositories
             return customers.Select(Mapper.MapAllCustomers);
         }
 
+        /// <summary>
+        /// Get location details by Location Id.
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <returns>IEnumerable of location matching locationId.</returns>
         public IEnumerable<Library.Models.Locations> GetLocationDetails(int? locationId)
         {
             IEnumerable<Entities.Locations> locations = from ls in _dbContext.Locations
@@ -126,6 +195,11 @@ namespace BananaStore.DataAccess.Repositories
             return locations.Select(Mapper.MapSingleLocation);
         }
 
+        /// <summary>
+        /// Get order details by Order Id.
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns>Single model of all order details matching orderId</returns>
         Library.Models.OrderDetails IOrdersRepository.GetOrderDetails(string orderId)
         {
             IEnumerable<Entities.Orders> order = from od in _dbContext.Orders
@@ -187,6 +261,11 @@ namespace BananaStore.DataAccess.Repositories
             return LibraryOrderDetails;
         }
 
+        /// <summary>
+        /// Get stock details of a single location.
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <returns>IEnumerable containing all details about stock at a location matching locationId.</returns>
         public IEnumerable<Library.Models.LocationStockDetails> GetLocationStockDetails(int? locationId)
         {
             var locations = from ls in _dbContext.LocationStock

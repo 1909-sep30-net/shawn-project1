@@ -19,6 +19,11 @@ namespace BananaStore.DataAccess.Repositories
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        /// <summary>
+        /// Uses product Id to return all info about a product
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns>Model of single product</returns>
         Library.Models.Products IProductsRepository.GetSingleProduct(Guid productId)
         {
             IQueryable<Entities.Products> Product = from pd in _dbContext.Products

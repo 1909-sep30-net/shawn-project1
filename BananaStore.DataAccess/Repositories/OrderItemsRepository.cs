@@ -19,6 +19,11 @@ namespace BananaStore.DataAccess.Repositories
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        /// <summary>
+        /// Get all items from an order (Product Id and Quantity only)
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns>IEnumerable of orderitmes matching orderId</returns>
         IEnumerable<Library.Models.OrderItems> IOrderItemsRepository.GetItemsFromOrder(Guid orderId)
         {
             IQueryable<Entities.OrderItems> Items = from oi in _dbContext.OrderItems

@@ -17,6 +17,11 @@ namespace BananaStore.DataAccess.Repositories
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        /// <summary>
+        /// Gets location stock from a certain location (Product Id and Quantity only)
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <returns>IEnumberable of location stock matching locationId</returns>
         public IEnumerable<Library.Models.LocationStock> GetLocationStock(int? locationId)
         {
             IQueryable<Entities.LocationStock> Invetory =   from ls in _dbContext.LocationStock
@@ -26,6 +31,14 @@ namespace BananaStore.DataAccess.Repositories
             return Invetory.Select(Mapper.MapLocationStock);
         }
 
+        /// <summary>
+        /// Updates data base with changes in stock by Product Id, Location Id and the quantity that is being depleted from the location.
+        /// Depreciated.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="quantity"></param>
+        /// <returns>Boolean - true if successly updated, false if an exception occurred </returns>
         public bool UpdateLocationStock(Guid productId, int? locationId, int? quantity)
         {
             var CurrentItem = from ls in _dbContext.LocationStock
@@ -40,6 +53,7 @@ namespace BananaStore.DataAccess.Repositories
                 _dbContext.SaveChanges();
                 return true;
             }
+
         }
 
 

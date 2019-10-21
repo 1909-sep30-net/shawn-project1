@@ -64,7 +64,7 @@
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
                     <td>
-                        <input class="" type="number" name="PN@(item.ProductId.ToString().Substring(0, 4))" min="0" max="@item.Quantity" />
+                        <input class="" type="number" name="PN@(item.ProductId.ToString().Substring(0, 4))" min="0" max="@item.Quantity"  />
                     </td>
                 </tr>
             }

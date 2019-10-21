@@ -61,6 +61,7 @@ namespace BananaStore.Controllers
                 CustomerId = o.CustomerId,
                 LocationId = o.LocationId
             }).ToList();
+            
 
             return View(viewModel);
         }
