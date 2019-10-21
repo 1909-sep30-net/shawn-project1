@@ -77,3 +77,7 @@ a:hover {
 .banana {
     background: center no-repeat url("../imgs/bananalogo.png");
 }
+
+i {
+    font-size: 72px;
+}

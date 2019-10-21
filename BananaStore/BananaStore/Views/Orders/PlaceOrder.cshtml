@@ -21,7 +21,7 @@ else
 <div class="container">
     <div class="d-flex align-items-center flex-column justify-content-center">
         <div class="col-md-6 text-center"><strong class="text-warning">Customer Id : </strong>@Html.DisplayFor(model => model.CustomerId)</div>
-        <div class="col-md-6 text-center"><strong class="text-warning">Customer Name : </strong>@Html.DisplayFor(model => model.FirstName) + " " + @Html.DisplayFor(model => model.LastName)</div>
+        <div class="col-md-6 text-center"><strong class="text-warning">Customer Name : </strong>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</div>
     </div>
     <div class="d-flex align-items-center flex-column justify-content-center">
         <div class="">

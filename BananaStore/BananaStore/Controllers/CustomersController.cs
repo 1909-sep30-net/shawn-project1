@@ -21,62 +21,86 @@ namespace BananaStore.Controllers
         }
 
 
-        // GET: Customers from firstname/lastname
-        public ActionResult CustomerSearchResults([FromQuery]string FirstName, [FromQuery]string LastName)
+        // Post: Customer/Search
+        [HttpPost]
+        public ActionResult Search(CustomersViewModel searched)
         {
+            string thisMethod = TempData["actionMethod"].ToString();
+            string nextMethod = "";
+            switch (thisMethod)
+            {
+                case "ChooseLocation":
+                    nextMethod = "New";
+                    break;
+                case "":
+                    nextMethod = "";
+                    break;
+                default:
+                    break;
+            }
 
-            IEnumerable<Customers> customers = _repository.GetCustomersByName(FirstName, LastName);
+            IEnumerable<Customers> customers = _repository.GetCustomersByName(searched.User_FirstName, searched.User_LastName);
             
-            var viewModels = customers.Select(p => new CustomersViewModel
+            var result = customers.Select(p => new CustomersViewModel
             {
                 CustomerId = p.CustomerId,
                 FirstName = p.FirstName,
-                LastName = p.LastName,
-                User_FirstName = FirstName,
-                User_LastName = LastName
+                LastName = p.LastName
 
-            }).ToList();
+            }).First();
 
-            
-            
-            return View(viewModels);
+            if (!ModelState.IsValid)
+            {
+
+                return RedirectToAction(thisMethod, "Orders", new { CustomerId = result.CustomerId, actionMethod = nextMethod }, null);
+            }
+            return View(searched);
         }
 
         
         // GET: Customers/Search
-        public ActionResult Search()
+        [HttpGet]
+        public ActionResult Search(string actionMethod)
         {
+            TempData["actionMethod"] = actionMethod;
             return View();
         }
 
-
         // GET: Customers/Create
-        public ActionResult CreateSuccess([FromQuery]Guid CustomerId, [FromQuery]string FirstName, [FromQuery]string LastName)
+        [HttpGet]
+        public ActionResult Create(string actionMethod)
         {
-            var viewModel = new CustomersViewModel()
-            {
-                CustomerId = CustomerId,
-                FirstName = FirstName,
-                LastName = LastName
-            };
-
-            return View(viewModel);
+            var newCustomerInfo = new CustomersViewModel();
+            TempData["actionMethod"] = actionMethod;
+            return View(newCustomerInfo);
         }
 
         // POST: Customers/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] //CSRF Implementation
         public ActionResult Create(CustomersViewModel newCustomerInfo)
         {
-            try
+            string thisMethod = TempData["actionMethod"].ToString();
+            string nextMethod = "";
+            switch (thisMethod)
+            {
+                case "ChooseLocation":
+                    nextMethod = "New";
+                    break;
+                case "":
+                    nextMethod = "";
+                    break;
+                default:
+                    break;
+            }
+
+
+            if (!ModelState.IsValid)
             {
                 var NewCustomer = _repository.AddCustomer(newCustomerInfo.User_FirstName, newCustomerInfo.User_LastName);
-                return RedirectToAction("ChooseLocation", "Orders", new { CustomerId = NewCustomer.CustomerId }, null);
+                return RedirectToAction(thisMethod, "Orders", new { CustomerId = NewCustomer.CustomerId, actionMethod = nextMethod }, null);
             }
-            catch
-            {
-                return View("Error");
-            }
+            return RedirectToAction("Index");
         }
     }
 }

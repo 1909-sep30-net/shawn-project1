@@ -20,10 +20,21 @@ namespace BananaStore.Controllers
             _repository = repository;
         }
 
+        //Get: Orders/ChooseCustomerType
+        public ActionResult ChooseCustomerType()
+        {
+
+            return View();
+        }
+
         //Get: Orders/ChooseLocation
-        public ActionResult ChooseLocation([FromQuery]string customerId)
+        public ActionResult ChooseLocation([FromQuery]string customerId, [FromQuery]string actionMethod)
         {
             TempData["CustomerId"] = customerId;
+            TempData["actionMethod"] = actionMethod;
+
+            // Create View Model and Use Here 
+
             return View();
         }
 
@@ -34,9 +45,9 @@ namespace BananaStore.Controllers
         }
 
         // GET: Orders/History *By Customer Guid
-        public ActionResult History([FromQuery]string customerId)
+        public ActionResult History([FromQuery]string customerId, [FromQuery]string locationId)
         {
-            var orders = _repository.GetAllOrdersByCustomerId(customerId);
+            var orders = (string.IsNullOrEmpty(customerId) ? _repository.GetAllOrdersByLocationId(locationId) : _repository.GetAllOrdersByCustomerId(customerId));
 
             var viewModel = orders.Select(o => new OrdersViewModel()
             {
@@ -328,7 +339,10 @@ namespace BananaStore.Controllers
                     {
                         OrderId = Guid.Parse(OrderId),
                         ProductId = item.ProductId,
-                        Quantity = (int?)int.Parse(MappedQuantity)
+                        Quantity = (int?)int.Parse(MappedQuantity),
+
+                        ProductName = item.ProductName,
+                        ProductDesc = item.ProductDesc
                     });
                 }
             }

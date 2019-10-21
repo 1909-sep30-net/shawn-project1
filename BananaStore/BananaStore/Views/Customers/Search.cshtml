@@ -1,5 +1,39 @@
-﻿<div class="p-3 w-100 vh-100 d-flex flex-column align-items-center justify-content-start">
-    <h1>Begin a new order</h1>
-    @Html.Partial("../Shared/_CustomerCreateForm.cshtml")
-    @Html.Partial("../Shared/_CustomerSearchForm.cshtml")
+﻿@model BananaStore.Models.CustomersViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Search</h1>
+
+<h4 class="text-muted"><em>Enter a customers name to continue order</em></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Search">
+            <div class="form-group">
+                <label asp-for="User_FirstName" class="control-label"></label>
+                <input asp-for="User_FirstName" class="form-control" data-val="true" data-val-required="This field is required." />
+                <span asp-validation-for="User_FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User_LastName" class="control-label"></label>
+                <input asp-for="User_LastName" class="form-control" data-val="true" data-val-required="This field is required." />
+                <span asp-validation-for="User_LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-outline-warning" />
+            </div>
+        </form>
+    </div>
 </div>
+
+
+<div>
+    @Html.ActionLink("Back to Main Screen", "Index", "Home")
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

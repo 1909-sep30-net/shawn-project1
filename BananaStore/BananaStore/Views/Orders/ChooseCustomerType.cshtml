@@ -1,32 +1,30 @@
 ﻿
 @{
-    ViewData["Title"] = "ChooseHistoryType";
+    ViewData["Title"] = "Choose Customer Type";
 }
 
-<h1 class="text-center">Choose History Type</h1>
 <div class="d-flex align-items-center flex-column justify-content-center h-100" id="header">
         <div class="d-flex align-items-center flex-column justify-content-center h-100">
-            <h1>Choose History Type for Orders</h1>
+            <h1>Choose Customer Type for Order</h1>
             <h3 class="text-muted"><em>Make your selection below.</em></h3>
         </div>
         <div class="d-flex align-items-center flex-row justify-content-around h-100 w-100">
             <div class="col-6 text-center align-middle h-100">
                 <div class="d-flex flex-column">
-                    <a href="@Url.Action("ChooseLocation", "Orders", new { actionMethod = "History" })">
-                        <i class="fas fa-store"></i>
-                        <div><h1>Location History</h1></div>
+                    <a href="@Url.Action("Create", "Customers", new { actionMethod = "ChooseLocation" })">
+                        <i class="fas fa-user-plus"></i>
+                        <div><h1>New Customer</h1></div>
                     </a>
                 </div>
             </div>
             <div class="col-6 text-center align-middle h-100">
                 <div class="d-flex flex-column">
-                    <a href="@Url.Action("Search", "Customers", new { actionMethod = "History" })">
-                        <h1><i class="fas fa-user text-primary"></i></h1>
+                    <a href="@Url.Action("Search", "Customers", new { actionMethod = "ChooseLocation" })">
+                        <h1><i class="fas fa-user"></i></h1>
                         <div><h1>Exsisting Customer</h1></div>
                     </a>
                 </div>
             </div>
         </div>
     </div> 
-
 
