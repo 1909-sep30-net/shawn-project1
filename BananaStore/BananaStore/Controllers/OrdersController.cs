@@ -20,14 +20,16 @@ namespace BananaStore.Controllers
             _repository = repository;
         }
 
-        //Get: ORders/ChooseLocation
+        //Get: Orders/ChooseLocation
         public ActionResult ChooseLocation([FromQuery]string customerId)
         {
-
-
             TempData["CustomerId"] = customerId;
+            return View();
+        }
 
-
+        //Get: Orders/ChooseHistoryType
+        public ActionResult ChooseHistoryType()
+        {
             return View();
         }
 
@@ -47,6 +49,7 @@ namespace BananaStore.Controllers
             return View(viewModel);
         }
 
+        //Get Orders *By LocationId
         public ActionResult LocationHistory([FromQuery]string locationId)
         {
             var orders = _repository.GetAllOrdersByLocationId(locationId);
@@ -245,13 +248,15 @@ namespace BananaStore.Controllers
                         MappedQuantity = "0";
                         break;
                 }
-                if (String.IsNullOrEmpty(MappedQuantity)) { MappedQuantity = "0"; }
-                CurrentOrderDetails.Purchased.Add(new OrderDetailsItems()
+                if (!(String.IsNullOrEmpty(MappedQuantity) || MappedQuantity == "0"))
                 {
-                    OrderId = Guid.Parse(OrderId),
-                    ProductId = item.ProductId,
-                    Quantity = (int?)int.Parse(MappedQuantity)
-                });
+                    CurrentOrderDetails.Purchased.Add(new OrderDetailsItems()
+                    {
+                        OrderId = Guid.Parse(OrderId),
+                        ProductId = item.ProductId,
+                        Quantity = (int?)int.Parse(MappedQuantity)
+                    });
+                }
             }
 
             List<OrderItems> FinalOrderItems = CurrentOrderDetails.Purchased.Select(x => new OrderItems()
@@ -316,13 +321,15 @@ namespace BananaStore.Controllers
                         MappedQuantity = "0";
                         break;
                 }
-                if (String.IsNullOrEmpty(MappedQuantity)) { MappedQuantity = "0"; }
-                CurrentOrderDetailsViewModel.Purchased.Add(new OrderDetailsItemsViewModel()
+                if (!(String.IsNullOrEmpty(MappedQuantity) || MappedQuantity == "0"))
                 {
-                    OrderId = Guid.Parse(OrderId),
-                    ProductId = item.ProductId,
-                    Quantity = (int?)int.Parse(MappedQuantity)
-                });
+                    CurrentOrderDetailsViewModel.Purchased.Add(new OrderDetailsItemsViewModel()
+                    {
+                        OrderId = Guid.Parse(OrderId),
+                        ProductId = item.ProductId,
+                        Quantity = (int?)int.Parse(MappedQuantity)
+                    });
+                }
             }
 
             if (_repository.PlaceOrder(FinalOrder, FinalOrderItems))

@@ -3,13 +3,17 @@
 @{
     ViewData["Title"] = "Customer Search Results";
 }
-<h1>Customer Search Results</h1>
+<h1 class="text-center">Customer Search Results</h1>
 
 @if (Model.Count() == 0)
 {
-    <h3>Nothing found</h3>
-
-    @Html.Partial("../Shared/_CustomerSearchForm.cshtml") @Html.Partial("../Shared/_CustomerCreateForm.cshtml")
+    
+    <div class="p-3 w-100 vh-100 d-flex flex-column align-items-center justify-content-start">
+        <h2>Nothing found</h2>
+        <h4 class="text-muted"><em>Try again or create a new customer.</em></h4>
+        @Html.Partial("../Shared/_CustomerCreateForm.cshtml")
+        @Html.Partial("../Shared/_CustomerSearchForm.cshtml")
+    </div>
 
 }
 else if (Model.Count() != 0)

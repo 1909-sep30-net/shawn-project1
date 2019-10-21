@@ -71,7 +71,7 @@ namespace BananaStore.Controllers
             try
             {
                 var NewCustomer = _repository.AddCustomer(newCustomerInfo.User_FirstName, newCustomerInfo.User_LastName);
-                return RedirectToAction("CreateSuccess", "Customers", NewCustomer, null);
+                return RedirectToAction("ChooseLocation", "Orders", new { CustomerId = NewCustomer.CustomerId }, null);
             }
             catch
             {

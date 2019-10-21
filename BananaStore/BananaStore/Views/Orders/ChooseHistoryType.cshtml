@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "ChooseHistoryType";
+}
+
+<h1 class="text-center">Choose History Type</h1>
+<div class="container d-flex flex-row">
+    <div class="col-6">
+        <div class="p-3 w-100 vh-100 d-flex flex-column align-items-center justify-content-start">
+            <h1>Begin a new order</h1>
+            @Html.Partial("../Shared/_CustomerSearchForm.cshtml")
+        </div>
+    </div>
+    <div class="col-6">
+        @Html.Partial("../Shared/_ChooseLocation.cshtml")
+    </div>
+
+</div>
+
