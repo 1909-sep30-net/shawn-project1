@@ -13,8 +13,5 @@ namespace BananaStore.Library.Models
         [DisplayName("Product Id")]
         public Guid ProductId { get; set; }
         public int Quantity { get; set; }
-
-        //public virtual Locations Location { get; set; }
-        //public virtual Products Product { get; set; }
     }
 }

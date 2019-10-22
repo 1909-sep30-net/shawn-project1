@@ -10,7 +10,5 @@ namespace BananaStore.Library.Models
         public Guid CustomerId { get; set; }
         public int? LocationId { get; set; }
 
-        //public virtual Customers Customer { get; set; }
-        //public virtual Locations Location { get; set; }
     }
 }

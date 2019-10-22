@@ -13,4 +13,10 @@
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BananaStore.DataAccess\BananaStore.DataAccess.csproj" />
+    <ProjectReference Include="..\..\BananaStore.Library\BananaStore.Library.csproj" />
+    <ProjectReference Include="..\BananaStore\BananaStore.csproj" />
+  </ItemGroup>
+
 </Project>

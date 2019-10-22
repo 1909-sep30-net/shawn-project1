@@ -11,7 +11,5 @@ namespace BananaStore.Library.Models
 
         public string ProductName { get; set; }
         public string ProductDesc { get; set; }
-
-        //public virtual Products Product { get; set; }
     }
 }

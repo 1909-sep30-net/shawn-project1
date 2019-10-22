@@ -20,7 +20,5 @@ namespace BananaStore.Library.Models
             FirstName = firstName;
             LastName = lastName;
         }
-
-        //public virtual ICollection<Orders> Orders { get; set; }
     }
 }

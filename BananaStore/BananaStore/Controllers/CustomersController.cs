@@ -88,6 +88,7 @@ namespace BananaStore.Controllers
         [ValidateAntiForgeryToken] //CSRF Implementation
         public ActionResult Create(CustomersViewModel newCustomerInfo)
         {
+            TempData["CreatedCustomer"] = "true";
             string thisMethod = TempData["actionMethod"].ToString();
             string nextMethod = "";
             switch (thisMethod)
@@ -106,7 +107,7 @@ namespace BananaStore.Controllers
             if (!ModelState.IsValid)
             {
                 var NewCustomer = _repository.AddCustomer(newCustomerInfo.User_FirstName, newCustomerInfo.User_LastName);
-                return RedirectToAction(thisMethod, "Orders", new { CustomerId = NewCustomer.CustomerId, actionMethod = nextMethod }, null);
+                return RedirectToAction(thisMethod, "Orders", new { CustomerId = NewCustomer.CustomerId, actionMethod = nextMethod,  }, null);
             }
             return RedirectToAction("Index");
         }

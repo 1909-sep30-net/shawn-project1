@@ -22,8 +22,5 @@ namespace BananaStore.Library.Models
         {
             List<OrderDetailsItems> Purchased = new List<OrderDetailsItems>();
         }
-
-        //public virtual Customers Customer { get; set; }
-        //public virtual Locations Location { get; set; }
     }
 }

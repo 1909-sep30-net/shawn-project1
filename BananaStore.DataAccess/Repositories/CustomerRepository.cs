@@ -22,7 +22,6 @@ namespace BananaStore.DataAccess.Repositories
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-
         /// <summary>
         /// Lists all customers.
         /// </summary>

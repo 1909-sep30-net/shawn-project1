@@ -6,15 +6,25 @@
 <h1 class="text-center m-0">Banana Store Locations</h1>
 <h3 class="text-muted text-center"><em>Make your selection below to continue.</em></h3>
 <div class="d-flex align-items-center flex-column justify-content-center h-100" id="header">
+    @if (TempData.ContainsKey("CreatedCustomer") && TempData["CreatedCustomer"].ToString() == "true")
+    {<div class="alert alert-success alert-dismissible fade show" role="alert">
+    Success! The new user has been added and you are ready to continue the order.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+    }
+
+
     <div class="w-25 h-25 text-center">
-        <a href="@Url.Action(TempData["actionMethod"].ToString(), "Orders", new { locationId = 10 })"  class="text-warning">
+        <a href="@Url.Action(TempData["actionMethod"].ToString(), "Orders", new { locationId = 10 })" class="text-warning">
             <h3>Bananas Enlighten</h3>
             <img src="~/imgs/bananalogo.png" style="height:25px" ) />
             <h5>Location 10</h5>
         </a>
     </div>
     <div class="w-25 h-25 text-center">
-        <a href="@Url.Action(TempData["actionMethod"].ToString(), "Orders", new { locationId = 20 })"  class="text-warning">
+        <a href="@Url.Action(TempData["actionMethod"].ToString(), "Orders", new { locationId = 20 })" class="text-warning">
             <h3>Retro Bananas</h3>
             <img src="~/imgs/bananalogo.png" style="height:25px" ) />
             <h5>Location 20</h5>
