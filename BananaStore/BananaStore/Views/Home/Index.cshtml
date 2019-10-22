@@ -9,12 +9,23 @@
         <div class="d-flex align-items-center flex-row justify-content-around h-100 w-100">
             <div class="col-6 text-center align-middle h-100">
                 <div>
-                    @Html.ActionLink("Begin New Order", "ChooseCustomerType", "Orders")
+                    <a href="@Url.Action("ChooseCustomerType", "Orders")">
+                        <i class="fas fa-clipboard"></i>
+                        <div><h1>Start a New Order</h1></div>
+                    </a>
+
+
                 </div>
             </div>
             <div class="col-6 text-center align-middle h-100">
                 <div>
-                    <a href="../Orders/ChooseHistoryType">Begin History Search</a>
+                    <a href="@Url.Action("ChooseHistoryType", "Orders")">
+                        <i class="fas fa-clipboard-list"></i>
+                        <div><h1>Begin a History Search</h1></div>
+                    </a>
+
+                    
+                    
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BananaStore", "BananaStore\BananaStore.csproj", "{AC6BA2B8-ECC1-4B76-8B21-851AA28EB636}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BananaStore", "BananaStore\BananaStore.csproj", "{AC6BA2B8-ECC1-4B76-8B21-851AA28EB636}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1F474D8D-4666-4ADE-B0AA-7C6A2E64581F} = {1F474D8D-4666-4ADE-B0AA-7C6A2E64581F}
 		{713903B5-A13F-4321-9888-D94F6347784C} = {713903B5-A13F-4321-9888-D94F6347784C}
@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BananaStore.DataAccess", ".
 	ProjectSection(ProjectDependencies) = postProject
 		{713903B5-A13F-4321-9888-D94F6347784C} = {713903B5-A13F-4321-9888-D94F6347784C}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BananaStore.Tests", "BananaStore.Tests\BananaStore.Tests.csproj", "{DFE5D17B-BBF3-4BE6-A0A6-44C82CFE42BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,10 @@ Global
 		{1F474D8D-4666-4ADE-B0AA-7C6A2E64581F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F474D8D-4666-4ADE-B0AA-7C6A2E64581F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F474D8D-4666-4ADE-B0AA-7C6A2E64581F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE5D17B-BBF3-4BE6-A0A6-44C82CFE42BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE5D17B-BBF3-4BE6-A0A6-44C82CFE42BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE5D17B-BBF3-4BE6-A0A6-44C82CFE42BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE5D17B-BBF3-4BE6-A0A6-44C82CFE42BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

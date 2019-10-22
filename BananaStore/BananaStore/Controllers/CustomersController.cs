@@ -25,8 +25,10 @@ namespace BananaStore.Controllers
         [HttpPost]
         public ActionResult Search(CustomersViewModel searched)
         {
+            string prevMethod = TempData["prevMethod"].ToString();
             string thisMethod = TempData["actionMethod"].ToString();
             string nextMethod = "";
+
             switch (thisMethod)
             {
                 case "ChooseLocation":
@@ -40,6 +42,12 @@ namespace BananaStore.Controllers
             }
 
             IEnumerable<Customers> customers = _repository.GetCustomersByName(searched.User_FirstName, searched.User_LastName);
+
+            if (customers.Count() == 0)
+            {
+                TempData["NonExistantUser"] = "true";
+                return RedirectToAction(prevMethod, "Orders");
+            }
             
             var result = customers.Select(p => new CustomersViewModel
             {
@@ -51,7 +59,6 @@ namespace BananaStore.Controllers
 
             if (!ModelState.IsValid)
             {
-
                 return RedirectToAction(thisMethod, "Orders", new { CustomerId = result.CustomerId, actionMethod = nextMethod }, null);
             }
             return View(searched);
@@ -60,9 +67,10 @@ namespace BananaStore.Controllers
         
         // GET: Customers/Search
         [HttpGet]
-        public ActionResult Search(string actionMethod)
+        public ActionResult Search([FromQuery]string actionMethod, [FromQuery]string prevMethod)
         {
             TempData["actionMethod"] = actionMethod;
+            TempData["prevMethod"] = prevMethod;
             return View();
         }
 
