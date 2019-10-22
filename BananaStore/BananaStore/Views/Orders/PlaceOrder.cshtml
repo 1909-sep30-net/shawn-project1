@@ -16,61 +16,61 @@ else
     <h1 class="text-center">Placed Order</h1>
     <h4 class="text-center"><em>Order placed successfully.</em></h4>
 
-
-
-<div class="container">
-    <div class="d-flex align-items-center flex-column justify-content-center">
-        <div class="col-md-6 text-center"><strong class="text-warning">Customer Id : </strong>@Html.DisplayFor(model => model.CustomerId)</div>
-        <div class="col-md-6 text-center"><strong class="text-warning">Customer Name : </strong>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</div>
-    </div>
-    <div class="d-flex align-items-center flex-column justify-content-center">
-        <div class="">
-            <strong class="text-warning">Order Number : </strong>@Html.DisplayFor(model => model.OrderId)
+    <div class="container">
+        <div class="d-flex align-items-center flex-column justify-content-center">
+            <div class="col-md-6 text-center"><strong class="text-warning">Customer Id : </strong>@Html.DisplayFor(model => model.CustomerId)</div>
+            <div class="col-md-6 text-center"><strong class="text-warning">Customer Name : </strong>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</div>
         </div>
+        <div class="d-flex align-items-center flex-column justify-content-center">
+            <div class="">
+                <strong class="text-warning">Order Number : </strong>@Html.DisplayFor(model => model.OrderId)
+            </div>
 
-        <div class="text-center">
-            <strong class="text-warning"><h5>@Html.DisplayFor(model => model.LocationName) (Location @Html.DisplayFor(model => model.LocationId))</h5></strong>
+            <div class="text-center">
+                <strong class="text-warning"><h5>@Html.DisplayFor(model => model.LocationName) (Location @Html.DisplayFor(model => model.LocationId))</h5></strong>
+            </div>
+            <div class="text-muted"><em>Order placed on @Html.DisplayFor(model => model.OrderDate)</em></div>
         </div>
-        <div class="text-muted"><em>Order placed on @Html.DisplayFor(model => model.OrderDate)</em></div>
     </div>
-</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchased.First().ProductId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchased.First().ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchased.First().ProductDesc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchased.First().Quantity)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var purchase in Model.Purchased)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => purchase.ProductId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => purchase.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => purchase.ProductDesc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => purchase.Quantity)
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+    <br />
+    <h3>Products Ordered</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Purchased.First().ProductId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Purchased.First().ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Purchased.First().ProductDesc)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Purchased.First().Quantity)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var purchase in Model.Purchased)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => purchase.ProductId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => purchase.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => purchase.ProductDesc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => purchase.Quantity)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
 }
