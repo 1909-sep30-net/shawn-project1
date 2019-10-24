@@ -7,7 +7,7 @@ namespace BananaStore.Library.Models
     {
         public Customers()
         {
-            //Orders = new HashSet<Orders>();
+         
         }
 
         public Guid CustomerId { get; set; }

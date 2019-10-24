@@ -1,8 +1,5 @@
 ﻿using System;
 using Xunit;
-using BananaStore.DataAccess.Entities;
-using BananaStore.DataAccess.Repositories;
-using BananaStore.Library.Models;
 
 
 namespace BananaStore.Tests
