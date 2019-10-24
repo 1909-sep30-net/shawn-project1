@@ -33,17 +33,27 @@ steps:
 #TAks can encapuslate some userful logic so we don't have to write it all out in script step in this case
 #the taks is both running test and publishing results to build itself
 - task: DotNetCoreCLI@2
+  displayName: dotnet test
   inputs:
     command: 'test'
     projects: './BananaStore/BananaStore.Tests'
-    arguments: '-c $(buildConfiguration)'
+    arguments: '-c $(buildConfiguration) --collect "XPlat Code Coverage"'
 
 - task: PublishCodeCoverageResults@1
+  displayName: Publish code coverage
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
 
+- task: DotNetCoreCLI@2
+  displayName: dotnet publish + zip
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    zipAfterPublish: true
+
 - task: AzureRmWebAppDeployment@4
+  displayName: App Service deploy
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Free Trial(f17cbbb9-fdac-47fd-bde9-4c8aa1e23270)'
