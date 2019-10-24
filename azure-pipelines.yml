@@ -35,5 +35,5 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: './BananaStore.Tests'
+    projects: './BananaStore/BananaStore.Tests'
     arguments: '-c $(buildConfiguration)'
