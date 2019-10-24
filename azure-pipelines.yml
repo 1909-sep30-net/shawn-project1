@@ -26,6 +26,14 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
   workingDirectory: BananaStore
 
-- script: dotnet test
-  displayName: dotnet test
-  workingDirectory: BananaStore
+# - script: dotnet test
+#   displayName: dotnet test
+#   workingDirectory: BananaStore
+
+#TAks can encapuslate some userful logic so we don't have to write it all out in script step in this case
+#the taks is both running test and publishing results to build itself
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: './BananaStore.Tests'
+    arguments: '-c $(buildConfiguration)'
