@@ -37,3 +37,16 @@ steps:
     command: 'test'
     projects: './BananaStore/BananaStore.Tests'
     arguments: '-c $(buildConfiguration)'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Free Trial(f17cbbb9-fdac-47fd-bde9-4c8aa1e23270)'
+    appType: 'webApp'
+    WebAppName: 'BananaStore20191023105024'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
