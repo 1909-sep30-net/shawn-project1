@@ -13,6 +13,17 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
+- task: SonarCloudPrepare@1
+displayName: Prepare Sonar Cloud
+  inputs:
+    SonarCloud: 'sonarcloud-pokemon'
+    organization: 'clark-pokemon'
+    scannerMode: 'MSBuild'
+    projectKey: 'clark-pokemon-projectkey'
+    projectName: 'clark-pokemon-projectkey'
+
+
 # 3 ways to switch directories to clear error
 # - script: 
 #     cd BananaStore
@@ -44,6 +55,12 @@ steps:
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+
+
+
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
 
 - task: DotNetCoreCLI@2
   displayName: dotnet publish + zip
