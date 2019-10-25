@@ -15,7 +15,7 @@ variables:
 steps:
 
 - task: SonarCloudPrepare@1
-displayName: Prepare Sonar Cloud
+  displayName: Prepare Sonar Cloud
   inputs:
     SonarCloud: 'sonarcloud-pokemon'
     organization: 'clark-pokemon'
